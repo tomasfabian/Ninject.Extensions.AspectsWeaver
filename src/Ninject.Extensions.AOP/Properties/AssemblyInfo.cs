@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Interception")]
+[assembly: AssemblyTitle("Ninject.Extensions.AOP")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Interception")]
-[assembly: AssemblyCopyright("Copyright ©  2013")]
+[assembly: AssemblyProduct("Ninject.Extensions.AOP")]
+[assembly: AssemblyCopyright("Copyright ©  2013 Fabian")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
