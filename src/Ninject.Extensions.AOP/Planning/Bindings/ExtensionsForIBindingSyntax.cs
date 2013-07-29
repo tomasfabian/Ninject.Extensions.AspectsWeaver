@@ -8,6 +8,7 @@
 // // 
 using System;
 using System.Linq.Expressions;
+using Ninject.Extensions.AOP.Selectors;
 
 namespace Ninject.Extensions.AOP.Planning.Bindings
 {
@@ -19,14 +20,20 @@ namespace Ninject.Extensions.AOP.Planning.Bindings
         /// <typeparam name="T">The type of instance to intercept.</typeparam>
         /// <param name="builder">The builder.</param>
         /// <returns>The fluent syntax.</returns>
-        public static IInterceptorSyntax Intercept<T>(this Ninject.Syntax.IBindingOnSyntax<T> builder)
+        public static IInterceptorSyntax Intercept<T>(this Syntax.IBindingOnSyntax<T> builder)
         {
             return new InterceptorBuilder(builder.Kernel, builder.BindingConfiguration);
         }
 
-        public static IInterceptorSyntax InterceptProperty<T>(this Ninject.Syntax.IBindingOnSyntax<T> builder, Expression<Func<T, object>> propertyGetter)
+        public static IInterceptorSyntax InterceptProperty<T>(this Syntax.IBindingOnSyntax<T> builder, Expression<Func<T, object>> propertyGetter)
         {
-            return new InterceptorBuilder(builder.Kernel, builder.BindingConfiguration);
+            var interceptorBuilder = new InterceptorBuilder(builder.Kernel, builder.BindingConfiguration);
+
+            var propertySelector = new PropertyInterceptorSelector<T>(propertyGetter);
+
+            interceptorBuilder.AllowInterceptionWith(propertySelector);
+
+            return interceptorBuilder;
         }
     }
 }

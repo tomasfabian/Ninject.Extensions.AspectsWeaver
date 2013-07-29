@@ -28,7 +28,7 @@ namespace Ninject.Extensions.AOP.Aspects.Custom
             }
         }
 
-        protected override object OnSuccess(object returnValue)
+        protected override object OnSuccess(object[] arguments, object returnValue)
         {
             return this.insteadOfAction(returnValue);
         }

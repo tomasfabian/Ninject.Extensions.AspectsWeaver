@@ -15,7 +15,7 @@ using Ninject.Extensions.AOP.Helpers;
 
 namespace Ninject.Extensions.AOP.Selectors
 {
-    public class PropertyInterceptorSelector<T> : IInterceptorSelector
+    public class PropertyInterceptorSelector<T> : IAllowInterceptionSelector
     {
         private readonly string propertyName;
 

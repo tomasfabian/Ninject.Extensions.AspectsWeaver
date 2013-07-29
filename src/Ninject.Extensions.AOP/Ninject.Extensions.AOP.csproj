@@ -73,6 +73,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Selectors\CompositeInterceptorSelector.cs" />
     <Compile Include="Selectors\ExcludeAttributeInterceptorSelector.cs" />
+    <Compile Include="Selectors\IAllowInterceptionSelector.cs" />
+    <Compile Include="Selectors\IExcludeInterceptionSelector.cs" />
     <Compile Include="Selectors\PropertyInterceptorSelector.cs" />
   </ItemGroup>
   <ItemGroup>

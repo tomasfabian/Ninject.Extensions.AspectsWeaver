@@ -8,6 +8,7 @@
 // // 
 using Ninject.Extensions.AOP.Components;
 using Castle.DynamicProxy;
+using Ninject.Extensions.AOP.Selectors;
 using Ninject.Planning.Bindings;
 
 namespace Ninject.Extensions.AOP.Planning.Bindings
@@ -45,7 +46,17 @@ namespace Ninject.Extensions.AOP.Planning.Bindings
             return this;
         }
 
-        public void FilterInterceptionWith(IInterceptorSelector selector)
+        public void AllowInterceptionWith(IAllowInterceptionSelector selector)
+        {
+            this.AddSelector(selector);
+        }
+
+        public void ExcludeInterceptionWith(IExcludeInterceptionSelector selector)
+        {
+            this.AddSelector(selector);
+        }
+
+        private void AddSelector(IInterceptorSelector selector)
         {
             this.kernel.Components.Get<IInterceptionRegistry>()
                 .AddSelector(this.bindingConfiguration, selector);

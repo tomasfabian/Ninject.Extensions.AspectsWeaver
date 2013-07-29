@@ -31,14 +31,14 @@ namespace Ninject.Extensions.AOP.Aspects.Custom
             }
         }
 
-        protected override object OnSuccess(object returnValue)
+        protected override object OnSuccess(object[] arguments, object returnValue)
         {
             if (afterAction != null)
             {
                 this.afterAction(returnValue); 
             }
 
-            return base.OnSuccess(returnValue);
+            return base.OnSuccess(arguments, returnValue);
         }
     }
 }

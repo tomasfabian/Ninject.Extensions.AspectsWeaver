@@ -22,21 +22,21 @@ namespace Ninject.Extensions.AOP.Aspects
             this.observer = observer;
         }
 
-        protected override object OnSuccess(object returnValue)
+        protected override object OnSuccess(object[] arguments, object returnValue)
         {
             var value = returnValue as T;
 
             this.observer.OnNext(value);
 
-            return base.OnSuccess(returnValue);
+            return base.OnSuccess(arguments, returnValue);
         }
 
-        protected override void OnException(Exception error)
+        protected override void OnException(object[] arguments, Exception error)
         {
             this.observer.OnError(error);
         }
 
-        protected override void OnExit()
+        protected override void OnExit(object[] arguments)
         {
             this.observer.OnCompleted();
         }

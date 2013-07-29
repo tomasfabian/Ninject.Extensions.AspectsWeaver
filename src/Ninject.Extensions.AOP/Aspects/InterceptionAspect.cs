@@ -24,16 +24,16 @@ namespace Ninject.Extensions.AOP.Aspects
                 {
                     invocation.Proceed();
                 }
-
-                invocation.ReturnValue = this.OnSuccess(invocation.ReturnValue);
+                
+                invocation.ReturnValue = this.OnSuccess(invocation.Arguments, invocation.ReturnValue);
             }
             catch (Exception error)
             {
-                this.OnException(error);
+                this.OnException(invocation.Arguments, error);
             }
             finally
             {
-                this.OnExit();
+                this.OnExit(invocation.Arguments);
             }
         }
 
@@ -49,16 +49,16 @@ namespace Ninject.Extensions.AOP.Aspects
         {
         }
 
-        protected virtual object OnSuccess(object returnValue)
+        protected virtual object OnSuccess(object[] arguments, object returnValue)
         {
             return returnValue;
         }
 
-        protected virtual void OnException(Exception error)
+        protected virtual void OnException(object[] arguments, Exception error)
         {
         }
 
-        protected virtual void OnExit()
+        protected virtual void OnExit(object[] arguments)
         {
         }
 

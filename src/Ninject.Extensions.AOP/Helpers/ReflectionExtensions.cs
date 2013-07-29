@@ -53,6 +53,9 @@ namespace Ninject.Extensions.AOP.Helpers
             if (left.Equals(right))
                 return true;
 
+            if (left.Name != right.Name)
+                return false;
+
             ParameterInfo[] leftParams = left.GetParameters();
             ParameterInfo[] rightParams = right.GetParameters();
 
@@ -73,7 +76,7 @@ namespace Ninject.Extensions.AOP.Helpers
             if (leftGenericArguments.Length != rightGenericArguments.Length)
                 return false;
 
-            return left.Name == right.Name;
+            return true;
         }
 
         #endregion

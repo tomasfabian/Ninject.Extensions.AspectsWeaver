@@ -16,7 +16,7 @@ using Ninject.Extensions.AOP.Helpers;
 
 namespace Ninject.Extensions.AOP.Selectors
 {
-    public class ExcludeAttributeInterceptorSelector : IInterceptorSelector
+    public class ExcludeAttributeInterceptorSelector : IExcludeInterceptionSelector
     {
         public IInterceptor[] SelectInterceptors(Type type, MethodInfo method, IInterceptor[] interceptors)
         {

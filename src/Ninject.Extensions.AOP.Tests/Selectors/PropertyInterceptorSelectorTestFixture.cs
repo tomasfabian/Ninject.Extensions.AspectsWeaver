@@ -21,7 +21,7 @@ namespace Ninject.Extensions.AOP.Tests.Selectors
     {
         private IKernel kernel;
         private IFooWithGetter foo;
-        private IInterceptorSelector interceptorSelector;
+        private IAllowInterceptionSelector interceptorSelector;
 
         [TestInitialize]
         public void Initialize()
@@ -35,7 +35,7 @@ namespace Ninject.Extensions.AOP.Tests.Selectors
                          .InSingletonScope()
                          .Intercept()
                          .With<FakeInterceptor>()
-                         .FilterInterceptionWith(interceptorSelector);
+                         .AllowInterceptionWith(interceptorSelector);
 
             foo = kernel.Get<IFooWithGetter>();
         }
