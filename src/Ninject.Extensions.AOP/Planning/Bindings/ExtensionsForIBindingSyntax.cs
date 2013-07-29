@@ -8,7 +8,9 @@
 // // 
 using System;
 using System.Linq.Expressions;
+using Castle.DynamicProxy;
 using Ninject.Extensions.AOP.Selectors;
+using Ninject.Syntax;
 
 namespace Ninject.Extensions.AOP.Planning.Bindings
 {
@@ -25,7 +27,7 @@ namespace Ninject.Extensions.AOP.Planning.Bindings
             return new InterceptorBuilder(builder.Kernel, builder.BindingConfiguration);
         }
 
-        public static IInterceptorSyntax InterceptProperty<T>(this Syntax.IBindingOnSyntax<T> builder, Expression<Func<T, object>> propertyGetter)
+        public static IInterceptorSyntax InterceptProperty<T>(this IBindingOnSyntax<T> builder, Expression<Func<T, object>> propertyGetter)
         {
             var interceptorBuilder = new InterceptorBuilder(builder.Kernel, builder.BindingConfiguration);
 

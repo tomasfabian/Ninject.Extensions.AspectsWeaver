@@ -53,7 +53,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activation\Strategies\InterceptActivationStrategy.cs" />
+    <Compile Include="Aspects\Custom\AfterInterceptionAspect.cs" />
     <Compile Include="Aspects\Custom\AroundInterceptionAspect.cs" />
+    <Compile Include="Aspects\Custom\BeforeInterceptionAspect.cs" />
     <Compile Include="Aspects\Custom\InsteadOfInterceptionAspect.cs" />
     <Compile Include="Aspects\IBoundaryAspects.cs" />
     <Compile Include="Aspects\InterceptionAspect.cs" />
