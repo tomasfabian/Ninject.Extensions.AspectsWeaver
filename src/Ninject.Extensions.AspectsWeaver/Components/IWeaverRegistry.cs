@@ -8,14 +8,13 @@
 // // 
 
 using System.Collections.Generic;
-using Ninject.Extensions.AspectsWeaver.Aspects;
 using Ninject.Planning.Bindings;
 
 namespace Ninject.Extensions.AspectsWeaver.Components
 {
-    public interface IJointPointsRegistry : Ninject.Components.INinjectComponent
+    public interface IWeaverRegistry : Ninject.Components.INinjectComponent
     {
-        void AddSelector(IBindingConfiguration bindingConfiguration, IJointPointSelector selector);
-        IEnumerable<IJointPointSelector> GetSelector(IBindingConfiguration bindingConfiguration);
+        void AddRegistry(IBindingConfiguration bindingConfiguration, IAspectsRegistry selector);
+        IEnumerable<IAspectsRegistry> GetRegistry(IBindingConfiguration bindingConfiguration);
     }
 }
