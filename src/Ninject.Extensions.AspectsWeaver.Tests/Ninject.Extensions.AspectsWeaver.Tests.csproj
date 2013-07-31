@@ -63,6 +63,7 @@
     <Compile Include="Modules\InterceptionModuleTestFixture.cs" />
     <Compile Include="Planning\Bindings\ExtensionsForIBindingSyntaxTestFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scenarios\SyntaxScenariosTestFixture.cs" />
     <Compile Include="Selectors\CompositeInterceptorSelectorTestFixture.cs" />
     <Compile Include="Selectors\ExcludeAttributeInterceptorSelectorTestFixture.cs" />
     <Compile Include="Selectors\PropertyInterceptorSelectorTestFixture.cs" />

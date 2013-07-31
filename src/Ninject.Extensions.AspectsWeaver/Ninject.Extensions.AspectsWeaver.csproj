@@ -65,6 +65,8 @@
     <Compile Include="Attributes\ExcludeJointPointAttribute.cs" />
     <Compile Include="Components\IAspectsRegistry.cs" />
     <Compile Include="Components\AspectsRegistry.cs" />
+    <Compile Include="Components\IJointPointsRegistry.cs" />
+    <Compile Include="Components\JointPointsRegistry.cs" />
     <Compile Include="Helpers\ReflectionExtensions.cs" />
     <Compile Include="Hooks\ExcludeFromProxyGenerationAttributeHook.cs" />
     <Compile Include="Hooks\ProxyGenerationHook.cs" />

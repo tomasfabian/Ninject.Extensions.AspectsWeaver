@@ -33,6 +33,8 @@ namespace Ninject.Extensions.AspectsWeaver.Tests.Fakes
         {
             interceptor.Object.Intercept(invocation);
 
+            invocation.Proceed();
+
             if (GetReturnValue != null)
             {
                 invocation.ReturnValue = GetReturnValue();

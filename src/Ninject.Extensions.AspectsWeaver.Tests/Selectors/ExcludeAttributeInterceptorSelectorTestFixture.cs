@@ -8,7 +8,9 @@
 
 using System;
 using System.Linq;
+using Castle.DynamicProxy;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Ninject.Extensions.AspectsWeaver.Aspects;
 using Ninject.Extensions.AspectsWeaver.Attributes;
 using Ninject.Extensions.AspectsWeaver.Planning.Bindings;
 using Ninject.Extensions.AspectsWeaver.Tests.Fakes;
@@ -31,7 +33,6 @@ namespace Ninject.Extensions.AspectsWeaver.Tests.Selectors
             kernel.Bind<IFoo>().To<Foo>()
                          .InSingletonScope()
                          .Weave()
-                         .JointPoints(null)
                          .Into<FakeInterceptor>();
 
             foo = kernel.Get<IFoo>();
