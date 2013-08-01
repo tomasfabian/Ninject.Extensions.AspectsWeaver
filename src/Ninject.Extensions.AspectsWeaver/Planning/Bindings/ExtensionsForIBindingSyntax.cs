@@ -22,7 +22,7 @@ namespace Ninject.Extensions.AspectsWeaver.Planning.Bindings
         /// <typeparam name="T">The type of instance to intercept.</typeparam>
         /// <param name="builder">The builder.</param>
         /// <returns>The fluent syntax.</returns>
-        public static IJointPointsOrWeaveIntoSyntax Weave<T>(this Syntax.IBindingOnSyntax<T> builder)
+        public static IPointCutOrWeaveIntoSyntax Weave<T>(this Syntax.IBindingOnSyntax<T> builder)
         {
            return new WeaverBuilder(builder.Kernel, builder.BindingConfiguration);
         }
@@ -31,9 +31,9 @@ namespace Ninject.Extensions.AspectsWeaver.Planning.Bindings
         {
             var interceptorBuilder = new WeaverBuilder(builder.Kernel, builder.BindingConfiguration);
 
-            var propertySelector = new GetPropertySelector<T>(propertyGetter);
+            var propertySelector = new GetPropertyCutSelector<T>(propertyGetter);
 
-            return interceptorBuilder.JointPoints(propertySelector);
+            return interceptorBuilder.PointCuts(propertySelector);
         }
     }
 }

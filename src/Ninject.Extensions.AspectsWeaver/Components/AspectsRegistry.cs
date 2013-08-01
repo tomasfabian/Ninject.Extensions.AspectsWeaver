@@ -21,7 +21,7 @@ namespace Ninject.Extensions.AspectsWeaver.Components
     public class AspectsRegistry : Ninject.Components.NinjectComponent, IAspectsRegistry
     {
         private readonly IDictionary<IBindingConfiguration, IList<Type>> aspectTypes = new Dictionary<IBindingConfiguration, IList<Type>>();
-        private readonly IDictionary<IBindingConfiguration, IJointPointSelector> jointPointSelectors = new Dictionary<IBindingConfiguration, IJointPointSelector>();
+        private readonly IDictionary<IBindingConfiguration, IPointCutSelector> jointPointSelectors = new Dictionary<IBindingConfiguration, IPointCutSelector>();
 
         /// <summary>
         /// Adds interceptor for the providerd bindingConfiguration.
@@ -42,9 +42,9 @@ namespace Ninject.Extensions.AspectsWeaver.Components
             }
         }
 
-        public void AddSelector(IBindingConfiguration binding, IJointPointSelector selector)
+        public void AddSelector(IBindingConfiguration binding, IPointCutSelector cutSelector)
         {
-            this.jointPointSelectors[binding] = selector;
+            this.jointPointSelectors[binding] = cutSelector;
         }
 
         /// <summary>
@@ -62,13 +62,13 @@ namespace Ninject.Extensions.AspectsWeaver.Components
             return Enumerable.Empty<Type>();
         }
 
-        public IJointPointSelector GetSelector(IBindingConfiguration binding)
+        public IPointCutSelector GetSelector(IBindingConfiguration binding)
         {
-            IJointPointSelector selector;
+            IPointCutSelector cutSelector;
 
-            this.jointPointSelectors.TryGetValue(binding, out selector);
+            this.jointPointSelectors.TryGetValue(binding, out cutSelector);
 
-            return selector;
+            return cutSelector;
         }
     }
 }

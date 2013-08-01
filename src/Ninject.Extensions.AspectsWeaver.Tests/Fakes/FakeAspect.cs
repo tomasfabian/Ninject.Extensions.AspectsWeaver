@@ -15,9 +15,11 @@ using Ninject.Extensions.AspectsWeaver.Aspects;
 
 namespace Ninject.Extensions.AspectsWeaver.Tests.Fakes
 {
-    public class FakeInterceptor : IAspect, IInterceptor
+    public class FakeAspect2 : FakeAspect {}
+
+    public class FakeAspect : IAspect, IInterceptor
     {
-        public FakeInterceptor()
+        public FakeAspect()
         {
             this.Setup();
         }

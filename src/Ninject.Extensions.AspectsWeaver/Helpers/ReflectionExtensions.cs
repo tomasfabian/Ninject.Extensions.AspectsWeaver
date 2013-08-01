@@ -47,6 +47,25 @@ namespace Ninject.Extensions.AspectsWeaver.Helpers
 
         #endregion
 
+        public const string SetPrefix = "set_";
+
+        public static bool IsSetter(this MethodInfo methodInfo)
+        {
+            return IsMethodForProperty(methodInfo, SetPrefix);
+        }
+
+        public const string GetPrefix = "get_";
+
+        public static bool IsGetter(this MethodInfo methodInfo)
+        {
+            return IsMethodForProperty(methodInfo, GetPrefix);
+        }
+
+        private static bool IsMethodForProperty(MethodInfo methodInfo, string prefix)
+        {
+            return methodInfo.IsSpecialName && methodInfo.Name.StartsWith(prefix, StringComparison.Ordinal);
+        }
+
         #region AreEqual
 
         public static bool AreEqual(this MethodInfo left, MethodInfo right)

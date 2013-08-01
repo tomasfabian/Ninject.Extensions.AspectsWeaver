@@ -8,7 +8,7 @@
 // // 
 namespace Ninject.Extensions.AspectsWeaver.Planning.Bindings
 {
-    public interface IJointPointsOrWeaveIntoSyntax : IWeaveIntoSyntax, IJointPointsSyntax
+    public interface IPointCutOrWeaveIntoSyntax : IWeaveIntoSyntax, IPointCutSyntax
     {
     }
 }

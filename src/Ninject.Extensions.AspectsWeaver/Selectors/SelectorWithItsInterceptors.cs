@@ -8,17 +8,17 @@ namespace Ninject.Extensions.AspectsWeaver.Activation.Strategies
     internal class SelectorWithItsInterceptors : IInterceptorSelector
     {
         private readonly IInterceptor[] interceptors;
-        private readonly IJointPointSelector selector;
+        private readonly IPointCutSelector cutSelector;
 
-        public SelectorWithItsInterceptors(IInterceptor[] interceptors, IJointPointSelector selector)
+        public SelectorWithItsInterceptors(IInterceptor[] interceptors, IPointCutSelector cutSelector)
         {
             this.interceptors = interceptors;
-            this.selector = selector;
+            this.cutSelector = cutSelector;
         }
 
         public IInterceptor[] SelectInterceptors(Type type, MethodInfo method, IInterceptor[] interceptors)
         {
-            if (this.selector.IsJointPoint(type, method))
+            if (this.cutSelector.IsPointCut(type, method))
             {
                 return this.interceptors;
             }

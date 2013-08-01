@@ -15,18 +15,18 @@ using Ninject.Extensions.AspectsWeaver.Aspects;
 
 namespace Ninject.Extensions.AspectsWeaver.Selectors
 {
-    public class CompositeJointPointSelector : IJointPointSelector
+    internal class CompositeCutSelector : IPointCutSelector
     {
-        private readonly IList<IJointPointSelector> selectors;
+        private readonly IList<IPointCutSelector> selectors;
 
-        public CompositeJointPointSelector(IEnumerable<IJointPointSelector> selectors)
+        public CompositeCutSelector(IEnumerable<IPointCutSelector> selectors)
         {
-            this.selectors = new List<IJointPointSelector>(selectors);
+            this.selectors = new List<IPointCutSelector>(selectors);
         }
 
-        public bool IsJointPoint(Type type, MethodInfo method)
+        public bool IsPointCut(Type type, MethodInfo method)
         {
-            return this.selectors.All(c => c.IsJointPoint(type, method));
+            return this.selectors.All(c => c.IsPointCut(type, method));
         }
     }
 }

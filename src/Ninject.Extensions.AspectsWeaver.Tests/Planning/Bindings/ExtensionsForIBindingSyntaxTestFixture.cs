@@ -27,11 +27,11 @@ namespace Ninject.Extensions.AspectsWeaver.Tests.Planning.Bindings
         {
             kernel = new StandardKernel();
 
-            kernel.Bind<FakeInterceptor>().ToSelf().InSingletonScope();
+            kernel.Bind<FakeAspect>().ToSelf().InSingletonScope();
 
             kernel.Bind<IFooWithGetter>().To<FooWithGetter>()
                          .WeaveGetProperty(f => f.Foo)
-                         .Into<FakeInterceptor>();
+                         .Into<FakeAspect>();
 
             foo = kernel.Get<IFooWithGetter>();
         }
@@ -46,7 +46,7 @@ namespace Ninject.Extensions.AspectsWeaver.Tests.Planning.Bindings
         public void InterceptProperty_AllowedPropertyGetterHasBeenIntercepted()
         {
             //Arrange
-            var interceptor = this.kernel.Get<FakeInterceptor>();
+            var interceptor = this.kernel.Get<FakeAspect>();
             interceptor.GetReturnValue = () => 1;
 
             //Act
@@ -61,7 +61,7 @@ namespace Ninject.Extensions.AspectsWeaver.Tests.Planning.Bindings
         public void InterceptProperty_NotAllowedPropertyGetterHasNotBeenIntercepted()
         {
             //Arrange
-            var interceptor = this.kernel.Get<FakeInterceptor>();
+            var interceptor = this.kernel.Get<FakeAspect>();
             interceptor.GetReturnValue = () => 1;
 
             //Act
@@ -78,11 +78,11 @@ namespace Ninject.Extensions.AspectsWeaver.Tests.Planning.Bindings
             //Arrange
             kernel.Rebind<IFooWithGetter>().To<FooWithGetter>()
              .WeaveGetProperty(f => f.NotFoo)
-             .Into<FakeInterceptor>();
+             .Into<FakeAspect>();
 
             foo = kernel.Get<IFooWithGetter>();
 
-            var interceptor = this.kernel.Get<FakeInterceptor>();
+            var interceptor = this.kernel.Get<FakeAspect>();
             interceptor.GetReturnValue = () => 1;
 
             //Act

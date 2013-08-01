@@ -22,21 +22,21 @@ namespace Ninject.Extensions.AspectsWeaver.Tests.Selectors
     {
         private IKernel kernel;
         private IFooWithGetter foo;
-        private IJointPointSelector selector;
+        private IPointCutSelector cutSelector;
 
         [TestInitialize]
         public void Initialize()
         {
-            this.selector = new GetPropertySelector<IFooWithGetter>(f => f.Foo);
+            this.cutSelector = new GetPropertyCutSelector<IFooWithGetter>(f => f.Foo);
             kernel = new StandardKernel();
 
-            kernel.Bind<FakeInterceptor>().ToSelf().InSingletonScope();
+            kernel.Bind<FakeAspect>().ToSelf().InSingletonScope();
 
             kernel.Bind<IFooWithGetter>().To<FooWithGetter>()
                          .InSingletonScope()
                          .Weave()
-                         .JointPoints(selector)
-                         .Into<FakeInterceptor>();
+                         .PointCuts(cutSelector)
+                         .Into<FakeAspect>();
 
             foo = kernel.Get<IFooWithGetter>();
         }
@@ -51,7 +51,7 @@ namespace Ninject.Extensions.AspectsWeaver.Tests.Selectors
         public void AllowedPropertyGetterHasBeenIntercepted()
         {
             //Arrange
-            var interceptor = this.kernel.Get<FakeInterceptor>();
+            var interceptor = this.kernel.Get<FakeAspect>();
             interceptor.GetReturnValue = () => 1;
 
             //Act
@@ -66,7 +66,7 @@ namespace Ninject.Extensions.AspectsWeaver.Tests.Selectors
         public void NotAllowedPropertyGetterHasNotBeenIntercepted()
         {
             //Arrange
-            var interceptor = this.kernel.Get<FakeInterceptor>();
+            var interceptor = this.kernel.Get<FakeAspect>();
             interceptor.GetReturnValue = () => 1;
 
             //Act

@@ -68,7 +68,7 @@ namespace Ninject.Extensions.AspectsWeaver.Activation.Strategies
                 finalSelectors.Add(joinableCompositeSelector);
             }
 
-            var compositeSelector = new CompositeSelector(finalSelectors);
+            var compositeSelector = new CompositeInterceptorSelector(finalSelectors);
 
             proxyGenerationOptions.Selector = compositeSelector;
 

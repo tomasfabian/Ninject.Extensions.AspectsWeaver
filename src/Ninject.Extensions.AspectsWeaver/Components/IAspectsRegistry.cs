@@ -26,7 +26,7 @@ namespace Ninject.Extensions.AspectsWeaver.Components
         /// <param name="type">The interceptors type.</param>
         void AddAspect(IBindingConfiguration bindingConfiguration, Type type); 
         
-        void AddSelector(IBindingConfiguration binding, IJointPointSelector selector);
+        void AddSelector(IBindingConfiguration binding, IPointCutSelector cutSelector);
 
         /// <summary>
         /// Gets configured interceptors for the provided bindingConfiguration.
@@ -35,6 +35,6 @@ namespace Ninject.Extensions.AspectsWeaver.Components
         /// <returns>The configured interceptor types.</returns>
         IEnumerable<Type> GetAspectTypes(IBindingConfiguration bindingConfiguration);
 
-        IJointPointSelector GetSelector(IBindingConfiguration binding);
+        IPointCutSelector GetSelector(IBindingConfiguration binding);
     }
 }

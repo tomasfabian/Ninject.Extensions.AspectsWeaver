@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using Castle.DynamicProxy;
+using Ninject.Extensions.AspectsWeaver.Aspects;
 
 namespace Ninject.Extensions.AspectsWeaver.Selectors
 {
-    public class CompositeSelector : IInterceptorSelector
+    public class CompositeInterceptorSelector : IInterceptorSelector
     {
         private readonly IList<IInterceptorSelector> selectors;
 
-        public CompositeSelector(IEnumerable<IInterceptorSelector> selectors)
+        public CompositeInterceptorSelector(IEnumerable<IInterceptorSelector> selectors)
         {
             this.selectors = new List<IInterceptorSelector>(selectors);
         }
@@ -21,6 +22,11 @@ namespace Ninject.Extensions.AspectsWeaver.Selectors
             foreach (var selector in this.selectors)
             {
                 filteredInterceptors = selector.SelectInterceptors(type, method, filteredInterceptors);
+
+                if (!filteredInterceptors.Any())
+                {
+                    return Aspect.EmptyInterceptors;
+                }
             }
 
             return filteredInterceptors;

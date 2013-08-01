@@ -2,8 +2,8 @@
 
 namespace Ninject.Extensions.AspectsWeaver.Planning.Bindings
 {
-    public interface IJointPointsSyntax
+    public interface IPointCutSyntax
     {
-        IWeaveIntoSyntax JointPoints(IJointPointSelector selector);
+        IWeaveIntoSyntax PointCuts(IPointCutSelector cutSelector);
     }
 }

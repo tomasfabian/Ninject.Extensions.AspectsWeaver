@@ -9,7 +9,7 @@ namespace Ninject.Extensions.AspectsWeaver.Planning.Bindings
         private readonly IBindingConfiguration bindingConfiguration;
         private readonly IAspectsRegistry registry;
 
-        public PointCutsBuilder(IKernel kernel, IBindingConfiguration bindingConfiguration, IJointPointSelector selector)
+        public PointCutsBuilder(IKernel kernel, IBindingConfiguration bindingConfiguration, IPointCutSelector cutSelector)
         {
             this.bindingConfiguration = bindingConfiguration;
 
@@ -18,9 +18,9 @@ namespace Ninject.Extensions.AspectsWeaver.Planning.Bindings
 
             weaverRegistry.AddRegistry(this.bindingConfiguration, this.registry);
 
-            if (selector != null)
+            if (cutSelector != null)
             {
-                registry.AddSelector(bindingConfiguration, selector);
+                registry.AddSelector(bindingConfiguration, cutSelector);
             }
         }
 

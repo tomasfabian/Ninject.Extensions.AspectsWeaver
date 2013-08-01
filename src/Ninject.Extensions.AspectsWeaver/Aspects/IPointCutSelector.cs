@@ -11,8 +11,8 @@ using System;
 
 namespace Ninject.Extensions.AspectsWeaver.Aspects
 {
-    public interface IJointPointSelector
+    public interface IPointCutSelector
     {
-        bool IsJointPoint(Type type, System.Reflection.MethodInfo method);
+        bool IsPointCut(Type type, System.Reflection.MethodInfo method);
     }
 }

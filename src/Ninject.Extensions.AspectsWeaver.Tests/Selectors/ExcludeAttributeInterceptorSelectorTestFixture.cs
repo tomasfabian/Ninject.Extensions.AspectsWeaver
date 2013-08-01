@@ -28,12 +28,12 @@ namespace Ninject.Extensions.AspectsWeaver.Tests.Selectors
         {
             kernel = new StandardKernel();
 
-            kernel.Bind<FakeInterceptor>().ToSelf().InSingletonScope();
+            kernel.Bind<FakeAspect>().ToSelf().InSingletonScope();
 
             kernel.Bind<IFoo>().To<Foo>()
                          .InSingletonScope()
                          .Weave()
-                         .Into<FakeInterceptor>();
+                         .Into<FakeAspect>();
 
             foo = kernel.Get<IFoo>();
         }
@@ -48,7 +48,7 @@ namespace Ninject.Extensions.AspectsWeaver.Tests.Selectors
         public void NotExcludedMethodHasBeenIntercepted()
         {
             //Arrange
-            var interceptor = this.kernel.Get<FakeInterceptor>();
+            var interceptor = this.kernel.Get<FakeAspect>();
 
             //Act
             foo.FooMe();
@@ -62,7 +62,7 @@ namespace Ninject.Extensions.AspectsWeaver.Tests.Selectors
         public void ExcludedMethodHasNotBeenIntercepted()
         {
             //Arrange
-            var interceptor = this.kernel.Get<FakeInterceptor>();
+            var interceptor = this.kernel.Get<FakeAspect>();
 
             //Act
             foo.Dispose();
@@ -79,10 +79,10 @@ namespace Ninject.Extensions.AspectsWeaver.Tests.Selectors
             kernel.Rebind<IFoo>().To<FooWithClassLevelExlude>()
              .InSingletonScope()
              .Weave()
-             .Into<FakeInterceptor>();
+             .Into<FakeAspect>();
 
             foo = kernel.Get<IFoo>();
-            var interceptor = this.kernel.Get<FakeInterceptor>();
+            var interceptor = this.kernel.Get<FakeAspect>();
 
             //Act
             foo.FooMe();

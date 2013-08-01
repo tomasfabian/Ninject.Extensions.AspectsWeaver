@@ -13,6 +13,7 @@ using System.Reflection;
 using Castle.DynamicProxy;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Ninject.Extensions.AspectsWeaver.Aspects;
+using Ninject.Extensions.AspectsWeaver.Attributes;
 using Ninject.Extensions.AspectsWeaver.Planning.Bindings;
 using Ninject.Extensions.AspectsWeaver.Tests.Fakes;
 using Ninject.Extensions.AspectsWeaver.Tests.Selectors;
@@ -26,14 +27,16 @@ namespace Ninject.Extensions.AspectsWeaver.Tests.Scenarios
         private IKernel kernel;
         private IBindingNamedWithOrOnSyntax<Foo> fooBindingSyntax;
         private IBindingNamedWithOrOnSyntax<MultiFoo> multiFooBindingSyntax;
-        private FakeInterceptor fakeInterceptor;
+        private FakeAspect fakeAspect;
+        private FakeAspect2 fakeAspect2;
 
         [TestInitialize]
         public void Initialize()
         {
             kernel = new StandardKernel();
 
-            kernel.Bind<FakeInterceptor>().ToSelf().InSingletonScope();
+            kernel.Bind<FakeAspect>().ToSelf().InSingletonScope();
+            kernel.Bind<FakeAspect2>().ToSelf().InSingletonScope();
 
             this.fooBindingSyntax = kernel.Bind<IFoo>().To<Foo>()
                          .InSingletonScope();
@@ -41,34 +44,124 @@ namespace Ninject.Extensions.AspectsWeaver.Tests.Scenarios
             this.multiFooBindingSyntax = kernel.Bind<IMultiFoo>().To<MultiFoo>()
                          .InSingletonScope();
            
-            fakeInterceptor = this.kernel.Get<FakeInterceptor>();
+            fakeAspect = this.kernel.Get<FakeAspect>();
+            fakeAspect2 = this.kernel.Get<FakeAspect2>();
         }
 
         [TestMethod]
-        public void WeaveTwiceWithTwoWeavers()
+        public void Empty()
         {
-            fooBindingSyntax.Weave().Into<FakeInterceptor>();
-            fooBindingSyntax.Weave().Into<FakeInterceptor>();
+            fooBindingSyntax.Weave();
 
             var foo = kernel.Get<IFoo>();
             foo.FooMe();
 
-            fakeInterceptor = this.kernel.Get<FakeInterceptor>();
-            Assert.AreEqual(2, fakeInterceptor.CalledTimes);
+            Assert.IsNotNull(foo);
         }
 
         [TestMethod]
-        public void WeaveIntoTwiceOnSameWeaver()
+        public void OneTimeWeaving()
+        {
+            fooBindingSyntax.Weave().Into<FakeAspect>();
+
+            var foo = kernel.Get<IFoo>();
+            foo.FooMe();
+
+            Assert.AreEqual(1, fakeAspect.CalledTimes);
+        }
+
+        [TestMethod]
+        public void EmptyAndOneTimeWeaving()
+        {
+            fooBindingSyntax.Weave();
+            fooBindingSyntax.Weave().Into<FakeAspect>();
+
+            var foo = kernel.Get<IFoo>();
+            foo.FooMe();
+
+            Assert.AreEqual(1, fakeAspect.CalledTimes);
+        }
+
+        [TestMethod]
+        public void OneTimeWeavingAndEmpty()
+        {
+            fooBindingSyntax.Weave().Into<FakeAspect>();
+            fooBindingSyntax.Weave();
+
+            var foo = kernel.Get<IFoo>();
+            foo.FooMe();
+
+            Assert.AreEqual(1, fakeAspect.CalledTimes);
+        }
+
+        [TestMethod]
+        public void WeavedIntoTwoAspects()
+        {
+            fooBindingSyntax.Weave()
+                .Into<FakeAspect>()
+                .Into<FakeAspect2>();
+
+            var foo = kernel.Get<IFoo>();
+            foo.FooMe();
+
+            Assert.AreEqual(1, fakeAspect.CalledTimes);
+            Assert.AreEqual(1, fakeAspect2.CalledTimes);
+        }
+
+        [TestMethod]
+        public void WeavedInToBranches()
+        {
+            fooBindingSyntax.Weave().Into<FakeAspect>();
+            fooBindingSyntax.Weave().Into<FakeAspect2>();
+
+            var foo = kernel.Get<IFoo>();
+            foo.FooMe();
+
+            Assert.AreEqual(1, fakeAspect.CalledTimes);
+            Assert.AreEqual(1, fakeAspect2.CalledTimes);
+        }
+
+        [TestMethod]
+        public void Split_WeavedIntoTwiceOnSameWeaver()
         {
             var syntax = fooBindingSyntax.Weave();
 
-            syntax.Into<FakeInterceptor>();
-            syntax.Into<FakeInterceptor>();
+            syntax.Into<FakeAspect>();
+            syntax.Into<FakeAspect>();
 
             var foo = kernel.Get<IFoo>();
             foo.FooMe();
 
-            Assert.AreEqual(2, fakeInterceptor.CalledTimes);
+            Assert.AreEqual(2, fakeAspect.CalledTimes);
+        }
+
+        [TestMethod]
+        public void Split_WeavedInTwoBranches_SecondIsWeavedIntoTwoAspects()
+        {
+            var syntax = fooBindingSyntax.Weave();
+
+            syntax.Into<FakeAspect>();
+            syntax.Into<FakeAspect>()
+                .Into<FakeAspect2>();
+
+            var foo = kernel.Get<IFoo>();
+            foo.FooMe();
+
+            Assert.AreEqual(2, fakeAspect.CalledTimes);
+            Assert.AreEqual(1, fakeAspect2.CalledTimes);
+        }
+
+        [TestMethod]
+        public void EmptyJointPoints()
+        {
+            var syntax = multiFooBindingSyntax.Weave();
+
+            syntax.PointCuts(new Foo23JoinPointCutSelector());
+
+            var foo = kernel.Get<IMultiFoo>();
+            this.CallFooMethods(foo);
+
+            Assert.AreEqual(0, fakeAspect.CalledTimes);
         }
 
         [TestMethod]
@@ -76,14 +169,29 @@ namespace Ninject.Extensions.AspectsWeaver.Tests.Scenarios
         {
             var syntax = multiFooBindingSyntax.Weave();
 
-            syntax.JointPoints(new Foo23JoinPointSelector()).Into<FakeInterceptor>();
+            syntax.PointCuts(new Foo23JoinPointCutSelector())
+                .Into<FakeAspect>();
 
             var foo = kernel.Get<IMultiFoo>();
-            foo.Foo1();
-            foo.Foo2();
-            foo.Foo3();
+            this.CallFooMethods(foo);
 
-            Assert.AreEqual(2, fakeInterceptor.CalledTimes);
+            Assert.AreEqual(2, fakeAspect.CalledTimes);
+        }
+
+        [TestMethod]
+        public void OnePointCutForTwoAspects()
+        {
+            var syntax = multiFooBindingSyntax.Weave();
+
+            syntax.PointCuts(new Foo23JoinPointCutSelector())
+                .Into<FakeAspect>()
+                .Into<FakeAspect2>();
+
+            var foo = kernel.Get<IMultiFoo>();
+            this.CallFooMethods(foo);
+
+            Assert.AreEqual(2, fakeAspect.CalledTimes);
+            Assert.AreEqual(2, fakeAspect2.CalledTimes);
         }
 
         [TestMethod]
@@ -91,17 +199,15 @@ namespace Ninject.Extensions.AspectsWeaver.Tests.Scenarios
         {
             var syntax = multiFooBindingSyntax.Weave();
 
-            syntax.JointPoints(new Foo23JoinPointSelector()).Into<FakeInterceptor>();
-            syntax.JointPoints(new Foo23JoinPointSelector()).Into<FakeInterceptor>();
+            syntax.PointCuts(new Foo23JoinPointCutSelector()).Into<FakeAspect>();
+            syntax.PointCuts(new Foo23JoinPointCutSelector()).Into<FakeAspect>();
 
             var foo = kernel.Get<IMultiFoo>();
-            foo.Foo1();
-            foo.Foo2();
-            foo.Foo3();
+            this.CallFooMethods(foo);
 
-            Assert.AreEqual(4, fakeInterceptor.CalledTimes);
-            Assert.AreEqual(0, fakeInterceptor.CalledMethods.Count(c => c == "Foo1"));
-            Assert.AreEqual(0, fakeInterceptor.CalledMethods.Count(c => c == "Foo1"));
+            Assert.AreEqual(4, fakeAspect.CalledTimes);
+            Assert.AreEqual(0, fakeAspect.CalledMethods.Count(c => c == "Foo1"));
+            Assert.AreEqual(0, fakeAspect.CalledMethods.Count(c => c == "Foo1"));
         }
 
         [TestMethod]
@@ -109,18 +215,65 @@ namespace Ninject.Extensions.AspectsWeaver.Tests.Scenarios
         {
             var syntax = multiFooBindingSyntax.Weave();
 
-            syntax.JointPoints(new Foo1JoinPointSelector()).Into<FakeInterceptor>();
-            syntax.JointPoints(new Foo2JoinPointSelector()).Into<FakeInterceptor>();
+            syntax.PointCuts(new Foo1JoinPointCutSelector()).Into<FakeAspect>();
+            syntax.PointCuts(new Foo2JoinPointCutSelector()).Into<FakeAspect>();
 
             var foo = kernel.Get<IMultiFoo>();
+            this.CallFooMethods(foo);
+
+            Assert.AreEqual(2, fakeAspect.CalledTimes);
+            Assert.AreEqual(1, fakeAspect.CalledMethods.Count(c => c == "Foo1"));
+            Assert.AreEqual(1, fakeAspect.CalledMethods.Count(c => c == "Foo2"));
+            Assert.AreEqual(0, fakeAspect.CalledMethods.Count(c => c == "Foo3"));
+        }
+
+        [TestMethod]
+        public void TwiceJointPoints_OneBranchDoesNotHaveAspect()
+        {
+            var syntax = multiFooBindingSyntax.Weave();
+
+            syntax.PointCuts(new Foo1JoinPointCutSelector()).Into<FakeAspect>();
+            syntax.PointCuts(new Foo2JoinPointCutSelector());
+
+            var foo = kernel.Get<IMultiFoo>();
+            this.CallFooMethods(foo);
+
+            Assert.AreEqual(1, fakeAspect.CalledTimes);
+            Assert.AreEqual(1, fakeAspect.CalledMethods.Count(c => c == "Foo1"));
+            Assert.AreEqual(0, fakeAspect.CalledMethods.Count(c => c == "Foo2"));
+            Assert.AreEqual(0, fakeAspect.CalledMethods.Count(c => c == "Foo3"));
+        }
+
+        [TestMethod]
+        public void TwiceJointPointsWithTwoInterceptors_DifferentSelectors_JointPointHasNotBeenRebinded()
+        {
+            var syntax = multiFooBindingSyntax.Weave();
+
+            syntax.PointCuts(new Foo1JoinPointCutSelector()).Into<FakeAspect>();
+            syntax.PointCuts(new Foo2JoinPointCutSelector())
+                .Into<FakeAspect>()
+                .Into<FakeAspect2>();
+
+            var foo = kernel.Get<IMultiFoo>();
+            this.CallFooMethods(foo);
+
+            Assert.AreEqual(2, fakeAspect.CalledTimes);
+            Assert.AreEqual(1, fakeAspect.CalledMethods.Count(c => c == "Foo1"));
+            Assert.AreEqual(1, fakeAspect.CalledMethods.Count(c => c == "Foo2"));
+            Assert.AreEqual(0, fakeAspect.CalledMethods.Count(c => c == "Foo3"));
+
+            Assert.AreEqual(1, fakeAspect2.CalledTimes);
+            Assert.AreEqual(0, fakeAspect2.CalledMethods.Count(c => c == "Foo1"));
+            Assert.AreEqual(1, fakeAspect2.CalledMethods.Count(c => c == "Foo2"));
+            Assert.AreEqual(0, fakeAspect2.CalledMethods.Count(c => c == "Foo3"));
+        }
+
+        private void CallFooMethods(IMultiFoo foo)
+        {
             foo.Foo1();
             foo.Foo2();
             foo.Foo3();
-
-            Assert.AreEqual(2, fakeInterceptor.CalledTimes);
-            Assert.AreEqual(1, fakeInterceptor.CalledMethods.Count(c => c == "Foo1"));
-            Assert.AreEqual(1, fakeInterceptor.CalledMethods.Count(c => c == "Foo2"));
-            Assert.AreEqual(0, fakeInterceptor.CalledMethods.Count(c => c == "Foo3"));
+            foo.Foo4();
         }
 
         public interface IMultiFoo
@@ -128,6 +281,7 @@ namespace Ninject.Extensions.AspectsWeaver.Tests.Scenarios
             void Foo1();
             void Foo2();
             void Foo3();
+            void Foo4();
         }
 
         public class MultiFoo : IMultiFoo
@@ -143,27 +297,32 @@ namespace Ninject.Extensions.AspectsWeaver.Tests.Scenarios
             public void Foo3()
             {
             }
+
+            [ExcludeJointPoint]
+            public void Foo4()
+            {
+            }
         }
 
-        public class Foo1JoinPointSelector : IJointPointSelector
+        public class Foo1JoinPointCutSelector : IPointCutSelector
         {
-            public bool IsJointPoint(Type type, MethodInfo method)
+            public bool IsPointCut(Type type, MethodInfo method)
             {
                 return method.Name == "Foo1";
             }
         }
 
-        public class Foo2JoinPointSelector : IJointPointSelector
+        public class Foo2JoinPointCutSelector : IPointCutSelector
         {
-            public bool IsJointPoint(Type type, MethodInfo method)
+            public bool IsPointCut(Type type, MethodInfo method)
             {
                 return method.Name == "Foo2";
             }
         }
 
-        public class Foo23JoinPointSelector : IJointPointSelector
+        public class Foo23JoinPointCutSelector : IPointCutSelector
         {
-            public bool IsJointPoint(Type type, MethodInfo method)
+            public bool IsPointCut(Type type, MethodInfo method)
             {
                 return method.Name == "Foo2" || method.Name == "Foo3";
             }

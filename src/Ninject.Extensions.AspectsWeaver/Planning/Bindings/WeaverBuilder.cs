@@ -15,7 +15,7 @@ namespace Ninject.Extensions.AspectsWeaver.Planning.Bindings
     /// <summary>
     /// Provides a mechanism to decorate classes with interceptors./>.
     /// </summary>
-    internal class WeaverBuilder : IJointPointsOrWeaveIntoSyntax
+    internal class WeaverBuilder : IPointCutOrWeaveIntoSyntax
     {
         private readonly IKernel kernel;
         private readonly IBindingConfiguration bindingConfiguration;
@@ -43,9 +43,9 @@ namespace Ninject.Extensions.AspectsWeaver.Planning.Bindings
                 .Into<TAspect>();
         }
 
-        public IWeaveIntoSyntax JointPoints(IJointPointSelector selector)
+        public IWeaveIntoSyntax PointCuts(IPointCutSelector cutSelector)
         {
-            return new PointCutsBuilder(this.kernel, this.bindingConfiguration, selector);
+            return new PointCutsBuilder(this.kernel, this.bindingConfiguration, cutSelector);
         }
     }
 }
