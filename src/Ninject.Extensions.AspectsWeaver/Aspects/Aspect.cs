@@ -9,14 +9,16 @@
 
 using System;
 using Castle.DynamicProxy;
+using Ninject.Extensions.AspectsWeaver.Aspects.Args;
+using Ninject.Extensions.AspectsWeaver.Aspects.Contracts;
 
 namespace Ninject.Extensions.AspectsWeaver.Aspects
 {
-    public abstract class Aspect : IInterceptor, IAspect
+    public abstract class Aspect : IAspect, IAspectJointPoints
     {
         public void Intercept(IInvocation invocation)
         {
-            this.OnEntry(invocation.Arguments);
+            this.Before(new BeforeArgs(invocation));
 
             try
             {
@@ -24,16 +26,16 @@ namespace Ninject.Extensions.AspectsWeaver.Aspects
                 {
                     invocation.Proceed();
                 }
-                
-                invocation.ReturnValue = this.OnSuccess(invocation.Arguments, invocation.ReturnValue);
+
+                this.Success(new SuccessArgs(invocation));
             }
             catch (Exception error)
             {
-                this.OnException(invocation.Arguments, error);
+                this.Exception(new ExceptionArgs(invocation, error));
             }
             finally
             {
-                this.OnExit(invocation.Arguments);
+                this.Finally(new FinallyArgs(invocation));
             }
         }
 
@@ -45,20 +47,40 @@ namespace Ninject.Extensions.AspectsWeaver.Aspects
             }
         }
 
-        protected virtual void OnEntry(object[] arguments)
+        public void OnBefore(IBeforeArgs args)
+        {
+            this.Before(args);
+        }
+
+        protected virtual void Before(IBeforeArgs args)
+        {
+        }
+        
+        public void OnSuccess(ISuccessArgs args)
+        {
+            this.Success(args);
+        }
+
+        protected virtual void Success(ISuccessArgs args)
         {
         }
 
-        protected virtual object OnSuccess(object[] arguments, object returnValue)
+        
+        public void OnException(IExceptionArgs args)
         {
-            return returnValue;
+            this.Exception(args);
         }
 
-        protected virtual void OnException(object[] arguments, Exception error)
+        protected virtual void Exception(IExceptionArgs args)
         {
         }
+        
+        public void OnFinally(IFinallyArgs args)
+        {
+            this.Finally(args);
+        }
 
-        protected virtual void OnExit(object[] arguments)
+        protected virtual void Finally(IFinallyArgs args)
         {
         }
 

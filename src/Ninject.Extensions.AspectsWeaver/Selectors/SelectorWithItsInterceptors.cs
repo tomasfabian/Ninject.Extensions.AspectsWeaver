@@ -3,7 +3,7 @@ using System.Reflection;
 using Castle.DynamicProxy;
 using Ninject.Extensions.AspectsWeaver.Aspects;
 
-namespace Ninject.Extensions.AspectsWeaver.Activation.Strategies
+namespace Ninject.Extensions.AspectsWeaver.Selectors
 {
     internal class SelectorWithItsInterceptors : IInterceptorSelector
     {

@@ -4,7 +4,7 @@ using Ninject.Planning.Bindings;
 
 namespace Ninject.Extensions.AspectsWeaver.Planning.Bindings
 {
-    public class PointCutsBuilder : IWeaveIntoSyntax
+    internal class PointCutsBuilder : IWeaveIntoSyntax
     {
         private readonly IBindingConfiguration bindingConfiguration;
         private readonly IAspectsRegistry registry;

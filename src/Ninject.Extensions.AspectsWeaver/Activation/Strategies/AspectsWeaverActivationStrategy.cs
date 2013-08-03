@@ -22,7 +22,7 @@ namespace Ninject.Extensions.AspectsWeaver.Activation.Strategies
     /// Contributes to a <see cref="IPipeline"/>, and is called during the activation
     /// and deactivation of an instance. Decorates the instance with configured interceptors.
     /// </summary>
-    public class AspectsWeaverActivationStrategy : ActivationStrategy
+    internal class AspectsWeaverActivationStrategy : ActivationStrategy
     {
         private readonly ProxyGenerator proxyGenenator = new ProxyGenerator();
 

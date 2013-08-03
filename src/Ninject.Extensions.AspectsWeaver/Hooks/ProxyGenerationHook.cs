@@ -13,7 +13,7 @@ using System.Reflection;
 
 namespace Ninject.Extensions.AspectsWeaver.Hooks
 {
-    public abstract class ProxyGenerationHook : IProxyGenerationHook
+    internal abstract class ProxyGenerationHook : IProxyGenerationHook
     {
         public bool ShouldInterceptMethod(Type type, MethodInfo memberInfo)
         {

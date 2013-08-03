@@ -14,7 +14,7 @@ using System.Reflection;
 
 namespace Ninject.Extensions.AspectsWeaver.Helpers
 {
-    public static class ReflectionExtensions
+    internal static class ReflectionExtensions
     {
         #region GetPropertyName
 

@@ -8,6 +8,7 @@
 // // 
 
 using System;
+using Ninject.Extensions.AspectsWeaver.Aspects.Contracts;
 
 namespace Ninject.Extensions.AspectsWeaver.Aspects
 {
@@ -23,21 +24,21 @@ namespace Ninject.Extensions.AspectsWeaver.Aspects
             this.observer = observer;
         }
 
-        protected override object OnSuccess(object[] arguments, object returnValue)
+        protected override void Success(ISuccessArgs args)
         {
-            var value = returnValue as T;
+            var value = args.Invocation.ReturnValue as T;
 
             this.observer.OnNext(value);
 
-            return base.OnSuccess(arguments, returnValue);
+            base.Success(args);
         }
 
-        protected override void OnException(object[] arguments, Exception error)
+        protected override void Exception(IExceptionArgs args)
         {
-            this.observer.OnError(error);
+            this.observer.OnError(args.Error);
         }
 
-        protected override void OnExit(object[] arguments)
+        protected override void Finally(IFinallyArgs args)
         {
             this.observer.OnCompleted();
         }

@@ -12,12 +12,13 @@ using System.Collections.Generic;
 using Castle.DynamicProxy;
 using Moq;
 using Ninject.Extensions.AspectsWeaver.Aspects;
+using Ninject.Extensions.AspectsWeaver.Aspects.Contracts;
 
 namespace Ninject.Extensions.AspectsWeaver.Tests.Fakes
 {
     public class FakeAspect2 : FakeAspect {}
 
-    public class FakeAspect : IAspect, IInterceptor
+    public class FakeAspect : IAspect
     {
         public FakeAspect()
         {
@@ -72,6 +73,22 @@ namespace Ninject.Extensions.AspectsWeaver.Tests.Fakes
         public void Reset()
         {
             this.calledTimes = 0;
+        }
+
+        public void OnBefore(IBeforeArgs args)
+        {
+        }
+
+        public void OnSuccess(ISuccessArgs args)
+        {
+        }
+
+        public void OnException(IExceptionArgs args)
+        {
+        }
+
+        public void OnFinally(IFinallyArgs args)
+        {
         }
     }
 }

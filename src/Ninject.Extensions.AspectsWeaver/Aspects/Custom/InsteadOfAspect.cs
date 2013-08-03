@@ -8,14 +8,15 @@
 // // 
 
 using System;
+using Ninject.Extensions.AspectsWeaver.Aspects.Contracts;
 
 namespace Ninject.Extensions.AspectsWeaver.Aspects.Custom
 {
     public class InsteadOfAspect : Aspect
     {
-        readonly Func<object, object> insteadOfAction;
+        readonly Func<ISuccessArgs, object> insteadOfAction;
 
-        public InsteadOfAspect(Func<object, object> insteadOfAction)
+        public InsteadOfAspect(Func<ISuccessArgs, object> insteadOfAction)
         {
             if (insteadOfAction == null) throw new ArgumentNullException("insteadOfAction");
             this.insteadOfAction = insteadOfAction;
@@ -29,9 +30,9 @@ namespace Ninject.Extensions.AspectsWeaver.Aspects.Custom
             }
         }
 
-        protected override object OnSuccess(object[] arguments, object returnValue)
+        protected override void Success(ISuccessArgs args)
         {
-            return this.insteadOfAction(returnValue);
+            args.Invocation.ReturnValue = this.insteadOfAction(args);
         }
     }
 }

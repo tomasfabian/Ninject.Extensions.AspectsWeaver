@@ -15,7 +15,7 @@ using Ninject.Planning.Bindings;
 
 namespace Ninject.Extensions.AspectsWeaver.Components
 {
-    public class WeaverRegistry : NinjectComponent, IWeaverRegistry
+    internal class WeaverRegistry : NinjectComponent, IWeaverRegistry
     {
         private readonly IDictionary<IBindingConfiguration, IList<IAspectsRegistry>> registriesDictionary = new Dictionary<IBindingConfiguration, IList<IAspectsRegistry>>();
 

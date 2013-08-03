@@ -17,7 +17,7 @@ using Ninject.Extensions.AspectsWeaver.Helpers;
 
 namespace Ninject.Extensions.AspectsWeaver.Selectors
 {
-    public class ExcludeJointPointAttributeInterceptorSelector : IInterceptorSelector
+    internal class ExcludeJointPointAttributeInterceptorSelector : IInterceptorSelector
     {
         private readonly IPointCutSelector cutSelector;
 

@@ -18,7 +18,7 @@ namespace Ninject.Extensions.AspectsWeaver.Components
     /// <summary>
     /// A component that provides interceptors.
     /// </summary>
-    public class AspectsRegistry : Ninject.Components.NinjectComponent, IAspectsRegistry
+    internal class AspectsRegistry : Ninject.Components.NinjectComponent, IAspectsRegistry
     {
         private readonly IDictionary<IBindingConfiguration, IList<Type>> aspectTypes = new Dictionary<IBindingConfiguration, IList<Type>>();
         private readonly IDictionary<IBindingConfiguration, IPointCutSelector> jointPointSelectors = new Dictionary<IBindingConfiguration, IPointCutSelector>();

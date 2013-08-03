@@ -6,13 +6,16 @@
 // // Licensed under the Apache License, Version 2.0.
 // // See the file LICENSE.txt for details.
 // // 
+
+using Ninject.Extensions.AspectsWeaver.Aspects.Contracts;
+
 namespace Ninject.Extensions.AspectsWeaver.Aspects
 {
-    public interface IBoundaryAspects
+    public interface IAspectJointPoints
     {
-        void OnEntry();
-        void OnSuccess();
-        void OnException();
-        void OnExit();
+        void OnBefore(IBeforeArgs args);
+        void OnSuccess(ISuccessArgs args);
+        void OnException(IExceptionArgs args);
+        void OnFinally(IFinallyArgs args);
     }
 }

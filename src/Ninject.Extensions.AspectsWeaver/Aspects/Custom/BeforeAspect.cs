@@ -8,12 +8,13 @@
 // // 
 
 using System;
+using Ninject.Extensions.AspectsWeaver.Aspects.Contracts;
 
 namespace Ninject.Extensions.AspectsWeaver.Aspects.Custom
 {
     public class BeforeAspect : AroundAspect
     {
-        public BeforeAspect(Action<object[]> beforeAction) 
+        public BeforeAspect(Action<IBeforeArgs> beforeAction) 
             : base(beforeAction, null)
         {
         }

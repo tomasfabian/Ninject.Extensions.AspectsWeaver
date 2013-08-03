@@ -15,11 +15,11 @@ using Ninject.Extensions.AspectsWeaver.Aspects;
 
 namespace Ninject.Extensions.AspectsWeaver.Selectors
 {
-    internal class CompositeCutSelector : IPointCutSelector
+    internal class CompositePointCutSelector : IPointCutSelector
     {
         private readonly IList<IPointCutSelector> selectors;
 
-        public CompositeCutSelector(IEnumerable<IPointCutSelector> selectors)
+        public CompositePointCutSelector(IEnumerable<IPointCutSelector> selectors)
         {
             this.selectors = new List<IPointCutSelector>(selectors);
         }
