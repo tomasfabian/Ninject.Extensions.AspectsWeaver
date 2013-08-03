@@ -17,7 +17,7 @@ using Ninject.Extensions.AspectsWeaver.Attributes;
 using Ninject.Extensions.AspectsWeaver.Modules;
 using Ninject.Extensions.AspectsWeaver.Planning.Bindings;
 
-namespace AspectWeaver.Demo.Basic
+namespace AspectWeaver.Demo.BasicHome
 {
     class Program
     {

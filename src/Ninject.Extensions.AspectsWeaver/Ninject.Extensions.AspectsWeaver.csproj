@@ -64,8 +64,11 @@
     <Compile Include="Aspects\Contracts\IBeforeArgs.cs" />
     <Compile Include="Aspects\Contracts\IInvocationArgs.cs" />
     <Compile Include="Aspects\Custom\InvocationAspect.cs" />
+    <Compile Include="Examples\AspectsDemo.cs" />
+    <Compile Include="Examples\BasicDemo.cs" />
     <Compile Include="Examples\BasicHomeDemo.cs" />
     <Compile Include="Examples\FullDemo.cs" />
+    <Compile Include="Examples\SelectorsDemo.cs" />
     <Compile Include="Selectors\SelectorWithItsInterceptors.cs" />
     <Compile Include="Aspects\Custom\AfterAspect.cs" />
     <Compile Include="Aspects\Custom\AroundAspect.cs" />
