@@ -26,7 +26,7 @@ namespace AspectWeaver.Demo.Aspects
             InterceptGet();
         }
 
-        public void InterceptGet()
+        public static void InterceptGet()
         {
             Ninject.IKernel kernel = new Ninject.StandardKernel(new AspectsWeaverModule());
 
