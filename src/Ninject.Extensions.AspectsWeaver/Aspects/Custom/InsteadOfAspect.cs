@@ -16,6 +16,12 @@ namespace Ninject.Extensions.AspectsWeaver.Aspects.Custom
     {
         readonly Func<ISuccessArgs, object> insteadOfAction;
 
+        public InsteadOfAspect()
+            : this(args => null)
+        {
+            
+        }
+
         public InsteadOfAspect(Func<ISuccessArgs, object> insteadOfAction)
         {
             if (insteadOfAction == null) throw new ArgumentNullException("insteadOfAction");
@@ -30,9 +36,24 @@ namespace Ninject.Extensions.AspectsWeaver.Aspects.Custom
             }
         }
 
+        protected sealed override void Before(IBeforeArgs args)
+        {
+            base.Before(args);
+        }
+
         protected override void Success(ISuccessArgs args)
         {
             args.Invocation.ReturnValue = this.insteadOfAction(args);
+        }
+
+        protected sealed override void Exception(IExceptionArgs args)
+        {
+            base.Exception(args);
+        }
+
+        protected sealed override void Finally(IFinallyArgs args)
+        {
+            base.Finally(args);
         }
     }
 }

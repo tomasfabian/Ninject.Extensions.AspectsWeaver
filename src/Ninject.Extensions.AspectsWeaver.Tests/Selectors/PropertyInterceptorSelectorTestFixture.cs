@@ -27,7 +27,7 @@ namespace Ninject.Extensions.AspectsWeaver.Tests.Selectors
         [TestInitialize]
         public void Initialize()
         {
-            this.cutSelector = new GetPropertyCutSelector<IFooWithGetter>(f => f.Foo);
+            this.cutSelector = new GetPropertyPointCutSelector<IFooWithGetter>(f => f.Foo);
             kernel = new StandardKernel();
 
             kernel.Bind<FakeAspect>().ToSelf().InSingletonScope();

@@ -24,7 +24,7 @@ namespace Ninject.Extensions.AspectsWeaver.Planning.Bindings
         /// Initializes a new instance of the <see cref="WeaverBuilder"/> class.
         /// </summary>
         /// <param name="kernel">The kernel.</param>
-        /// <param name="bindingConfiguration">The bindingConfiguration to build.</param>
+        /// <param name="bindingConfiguration">The binding configuration to build.</param>
         public WeaverBuilder(IKernel kernel, IBindingConfiguration bindingConfiguration)
         {
             this.kernel = kernel;
@@ -32,10 +32,10 @@ namespace Ninject.Extensions.AspectsWeaver.Planning.Bindings
         }
 
         /// <summary>
-        /// Indicates that the service should be intercepted with the specified interceptor type.
+        /// Indicates that the service should be intercepted with the specified aspect type.
         /// </summary>
-        /// <typeparam name="TAspect">The interceptor type.</typeparam>
-        /// <returns>The fluent syntax.</returns>
+        /// <typeparam name="TAspect">The aspect's type.</typeparam>
+        /// <returns>The weaver builder's fluent syntax.</returns>
         public IWeaveIntoSyntax Into<TAspect>()
          where TAspect : IAspect
         {
@@ -43,9 +43,14 @@ namespace Ninject.Extensions.AspectsWeaver.Planning.Bindings
                 .Into<TAspect>();
         }
 
-        public IWeaveIntoSyntax PointCuts(IPointCutSelector cutSelector)
+        /// <summary>
+        /// Indicates that the interception should be limited to selected pointcuts.
+        /// </summary>
+        /// <param name="pointcutSelector">The pointcuts selector.</param>
+        /// <returns>The weaver builder's fluent syntax.</returns>
+        public IWeaveIntoSyntax PointCuts(IPointCutSelector pointcutSelector)
         {
-            return new PointCutsBuilder(this.kernel, this.bindingConfiguration, cutSelector);
+            return new PointCutsBuilder(this.kernel, this.bindingConfiguration, pointcutSelector);
         }
     }
 }

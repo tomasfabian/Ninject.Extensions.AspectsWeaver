@@ -16,18 +16,18 @@ using Ninject.Extensions.AspectsWeaver.Helpers;
 
 namespace Ninject.Extensions.AspectsWeaver.Selectors
 {
-    public class GetPropertyCutSelector<T> : IPointCutSelector
+    public class GetPropertyPointCutSelector<T> : PropertyPointCutSelector<T>
     {
-        private readonly string propertyName;
-
-        public GetPropertyCutSelector(Expression<Func<T, object>> propertyExpression)
+        public GetPropertyPointCutSelector(Expression<Func<T, object>> propertyExpression)
+            : base(propertyExpression)
         {
-            this.propertyName = propertyExpression.GetPropertyName();
         }
 
-        public bool IsPointCut(Type type, MethodInfo methodInfo)
+        protected override string Prefix { get { return ReflectionExtensions.GetPrefix; } }
+
+        protected override bool IsCorrectJointPoint(MethodInfo methodInfo)
         {
-            return methodInfo.Name == (ReflectionExtensions.GetPrefix + propertyName) && methodInfo.IsGetter();
+            return methodInfo.IsGetter();
         }
     }
 
@@ -37,7 +37,7 @@ namespace Ninject.Extensions.AspectsWeaver.Selectors
 
         public GetPropertyInterceptorSelector(Expression<Func<T, object>> propertyExpression)
         {
-            this.cutSelector = new GetPropertyCutSelector<T>(propertyExpression);
+            this.cutSelector = new GetPropertyPointCutSelector<T>(propertyExpression);
         }
 
         public IInterceptor[] SelectInterceptors(Type type, MethodInfo method, IInterceptor[] interceptors)

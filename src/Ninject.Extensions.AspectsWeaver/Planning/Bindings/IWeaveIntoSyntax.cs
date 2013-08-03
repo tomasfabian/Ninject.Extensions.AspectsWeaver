@@ -20,7 +20,7 @@ namespace Ninject.Extensions.AspectsWeaver.Planning.Bindings
         /// Indicates that the service should be intercepted with the specified aspect type.
         /// </summary>
         /// <typeparam name="TAspect">The aspect type.</typeparam>
-        /// <returns>The fluent syntax.</returns>
+        /// <returns>The weaver builder's fluent syntax.</returns>
         IWeaveIntoSyntax Into<TAspect>() where TAspect : IAspect;
     }
 }

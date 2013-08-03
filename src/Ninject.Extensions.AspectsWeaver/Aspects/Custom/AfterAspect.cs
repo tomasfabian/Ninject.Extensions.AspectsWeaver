@@ -14,9 +14,20 @@ namespace Ninject.Extensions.AspectsWeaver.Aspects.Custom
 {
     public class AfterAspect : AroundAspect
     {
+        public AfterAspect()
+            : base(null, args => { })
+        {
+            
+        }
+
         public AfterAspect(Action<ISuccessArgs> afterAction) 
             : base(null, afterAction)
         {
+        }
+
+        protected sealed override void Before(IBeforeArgs args)
+        {
+            base.Before(args);
         }
     }
 }

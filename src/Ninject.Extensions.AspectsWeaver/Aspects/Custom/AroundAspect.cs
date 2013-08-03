@@ -14,33 +14,49 @@ namespace Ninject.Extensions.AspectsWeaver.Aspects.Custom
 {
     public class AroundAspect : Aspect
     {
-        private readonly Action<IBeforeArgs> beforeAction;
-        private readonly Action<ISuccessArgs> afterAction;
+        private Action<IBeforeArgs> BeforeAction { get; set; }
+        private Action<ISuccessArgs> AfterAction { get; set; }
+
+        public AroundAspect()
+            : this(args => { }, args => { })
+        {
+            
+        }
 
         public AroundAspect(Action<IBeforeArgs> beforeAction, Action<ISuccessArgs> afterAction)
         {
-            this.beforeAction = beforeAction;
-            this.afterAction = afterAction;
+            this.BeforeAction = beforeAction;
+            this.AfterAction = afterAction;
         }
 
         protected override void Before(IBeforeArgs args)
         {
             base.Before(args);
 
-            if (this.beforeAction != null)
+            if (this.BeforeAction != null)
             {
-                this.beforeAction(args); 
+                this.BeforeAction(args); 
             }
         }
 
         protected override void Success(ISuccessArgs args)
         {
-            if (afterAction != null)
+            if (AfterAction != null)
             {
-                this.afterAction(args); 
+                this.AfterAction(args); 
             }
 
             base.Success(args);
+        }
+
+        protected sealed override void Exception(IExceptionArgs args)
+        {
+            base.Exception(args);
+        }
+
+        protected sealed override void Finally(IFinallyArgs args)
+        {
+            base.Finally(args);
         }
     }
 }

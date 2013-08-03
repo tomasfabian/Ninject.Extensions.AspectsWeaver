@@ -8,6 +8,9 @@
 // // 
 namespace Ninject.Extensions.AspectsWeaver.Planning.Bindings
 {
+    /// <summary>
+    /// Fluent syntax for weave into or pointcut syntax continuation.
+    /// </summary>
     public interface IPointCutOrWeaveIntoSyntax : IWeaveIntoSyntax, IPointCutSyntax
     {
     }

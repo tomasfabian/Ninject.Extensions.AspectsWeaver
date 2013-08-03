@@ -4,11 +4,20 @@ using Ninject.Planning.Bindings;
 
 namespace Ninject.Extensions.AspectsWeaver.Planning.Bindings
 {
+    /// <summary>
+    /// Provides a mechanism to limit joinpoints for interception./>.
+    /// </summary>
     internal class PointCutsBuilder : IWeaveIntoSyntax
     {
         private readonly IBindingConfiguration bindingConfiguration;
         private readonly IAspectsRegistry registry;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="kernel"></param>
+        /// <param name="bindingConfiguration"></param>
+        /// <param name="cutSelector"></param>
         public PointCutsBuilder(IKernel kernel, IBindingConfiguration bindingConfiguration, IPointCutSelector cutSelector)
         {
             this.bindingConfiguration = bindingConfiguration;
@@ -24,7 +33,8 @@ namespace Ninject.Extensions.AspectsWeaver.Planning.Bindings
             }
         }
 
-        public IWeaveIntoSyntax Into<TAspect>() where TAspect : IAspect
+        public IWeaveIntoSyntax Into<TAspect>() 
+            where TAspect : IAspect
         {
             this.registry
                 .AddAspect(this.bindingConfiguration, typeof(TAspect));

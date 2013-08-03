@@ -69,6 +69,7 @@
     <Compile Include="Examples\BasicHomeDemo.cs" />
     <Compile Include="Examples\FullDemo.cs" />
     <Compile Include="Examples\SelectorsDemo.cs" />
+    <Compile Include="Selectors\PropertyPointCutSelector.cs" />
     <Compile Include="Selectors\SelectorWithItsInterceptors.cs" />
     <Compile Include="Aspects\Custom\AfterAspect.cs" />
     <Compile Include="Aspects\Custom\AroundAspect.cs" />
@@ -97,8 +98,9 @@
     <Compile Include="Selectors\CompositePointCutSelector.cs" />
     <Compile Include="Selectors\CompositeInterceptorSelector.cs" />
     <Compile Include="Selectors\ExcludePointCutAttributeSelector.cs" />
-    <Compile Include="Selectors\GetPropertyCutSelector.cs" />
+    <Compile Include="Selectors\GetPropertyPointCutSelector.cs" />
     <Compile Include="Selectors\JoinableCompositeSelector.cs" />
+    <Compile Include="Selectors\SetPropertyPointCutSelector.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
