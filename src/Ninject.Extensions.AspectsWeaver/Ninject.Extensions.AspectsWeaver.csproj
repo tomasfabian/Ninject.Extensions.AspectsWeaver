@@ -67,6 +67,7 @@
     <Compile Include="Examples\AspectsDemo.cs" />
     <Compile Include="Examples\BasicDemo.cs" />
     <Compile Include="Examples\BasicHomeDemo.cs" />
+    <Compile Include="Examples\CustomAspectsDemo.cs" />
     <Compile Include="Examples\FullDemo.cs" />
     <Compile Include="Examples\SelectorsDemo.cs" />
     <Compile Include="Selectors\PropertyPointCutSelector.cs" />
