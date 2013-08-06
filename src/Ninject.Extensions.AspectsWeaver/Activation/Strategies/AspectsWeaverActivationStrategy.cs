@@ -37,11 +37,11 @@ namespace Ninject.Extensions.AspectsWeaver.Activation.Strategies
 
             var weaverRegistries = context.Kernel.Components.Get<IWeaverRegistry>();
 
-            IList<IInterceptor> allInterceptors = new List<IInterceptor>();
+            var allInterceptors = new List<IInterceptor>();
 
             var interceptorSelectors = new List<SelectorWithItsInterceptors>();
 
-            foreach (var aspectsRegistry in weaverRegistries.GetRegistry(context.Binding.BindingConfiguration))
+            foreach (var aspectsRegistry in weaverRegistries.GetAspectsRegistries(context.Binding.BindingConfiguration))
             {
                 var interceptors = GetInterceptors(context, aspectsRegistry, allInterceptors);
 

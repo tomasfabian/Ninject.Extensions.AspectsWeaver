@@ -19,7 +19,7 @@ namespace Ninject.Extensions.AspectsWeaver.Components
     {
         private readonly IDictionary<IBindingConfiguration, IList<IAspectsRegistry>> registriesDictionary = new Dictionary<IBindingConfiguration, IList<IAspectsRegistry>>();
 
-        public void AddRegistry(IBindingConfiguration bindingConfiguration, IAspectsRegistry selector)
+        public void AddAspectsRegistry(IBindingConfiguration bindingConfiguration, IAspectsRegistry selector)
         {
             IList<IAspectsRegistry> registries;
             if (this.registriesDictionary.TryGetValue(bindingConfiguration, out registries))
@@ -33,7 +33,7 @@ namespace Ninject.Extensions.AspectsWeaver.Components
             }
         }
 
-        public IEnumerable<IAspectsRegistry> GetRegistry(IBindingConfiguration bindingConfiguration)
+        public IEnumerable<IAspectsRegistry> GetAspectsRegistries(IBindingConfiguration bindingConfiguration)
         {
             IList<IAspectsRegistry> registries;
             if (this.registriesDictionary.TryGetValue(bindingConfiguration, out registries))

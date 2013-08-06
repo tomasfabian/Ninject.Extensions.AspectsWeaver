@@ -25,7 +25,7 @@ namespace Ninject.Extensions.AspectsWeaver.Syntax
             var weaverRegistry = kernel.Components.Get<IWeaverRegistry>();
             this.registry = kernel.Components.Get<IAspectsRegistry>();
 
-            weaverRegistry.AddRegistry(this.bindingConfiguration, this.registry);
+            weaverRegistry.AddAspectsRegistry(this.bindingConfiguration, this.registry);
 
             if (cutSelector != null)
             {

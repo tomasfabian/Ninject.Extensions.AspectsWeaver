@@ -14,7 +14,7 @@ namespace Ninject.Extensions.AspectsWeaver.Components
 {
     public interface IWeaverRegistry : Ninject.Components.INinjectComponent
     {
-        void AddRegistry(IBindingConfiguration bindingConfiguration, IAspectsRegistry selector);
-        IEnumerable<IAspectsRegistry> GetRegistry(IBindingConfiguration bindingConfiguration);
+        void AddAspectsRegistry(IBindingConfiguration bindingConfiguration, IAspectsRegistry selector);
+        IEnumerable<IAspectsRegistry> GetAspectsRegistries(IBindingConfiguration bindingConfiguration);
     }
 }
