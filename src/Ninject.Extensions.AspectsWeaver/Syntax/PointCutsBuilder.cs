@@ -2,7 +2,7 @@
 using Ninject.Extensions.AspectsWeaver.Components;
 using Ninject.Planning.Bindings;
 
-namespace Ninject.Extensions.AspectsWeaver.Planning.Bindings
+namespace Ninject.Extensions.AspectsWeaver.Syntax
 {
     /// <summary>
     /// Provides a mechanism to limit joinpoints for interception./>.

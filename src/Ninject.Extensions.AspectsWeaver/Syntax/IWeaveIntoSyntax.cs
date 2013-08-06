@@ -9,7 +9,7 @@
 
 using Ninject.Extensions.AspectsWeaver.Aspects;
 
-namespace Ninject.Extensions.AspectsWeaver.Planning.Bindings
+namespace Ninject.Extensions.AspectsWeaver.Syntax
 {
     /// <summary>
     /// Used to define a basic aspects veawer syntax builder.

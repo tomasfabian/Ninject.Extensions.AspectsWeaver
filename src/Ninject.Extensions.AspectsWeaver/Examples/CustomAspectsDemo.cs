@@ -12,7 +12,7 @@ using Ninject;
 using Ninject.Extensions.AspectsWeaver.Aspects.Contracts;
 using Ninject.Extensions.AspectsWeaver.Aspects.Custom;
 using Ninject.Extensions.AspectsWeaver.Modules;
-using Ninject.Extensions.AspectsWeaver.Planning.Bindings;
+using Ninject.Extensions.AspectsWeaver.Syntax;
 
 namespace AspectWeaver.Demo.CustomAspects
 {

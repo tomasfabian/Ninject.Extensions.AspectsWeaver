@@ -13,7 +13,7 @@ using AspectWeaver.Demo.Basic;
 using Ninject;
 using Ninject.Extensions.AspectsWeaver.Aspects;
 using Ninject.Extensions.AspectsWeaver.Modules;
-using Ninject.Extensions.AspectsWeaver.Planning.Bindings;
+using Ninject.Extensions.AspectsWeaver.Syntax;
 
 namespace AspectWeaver.Demo.Selectors
 {

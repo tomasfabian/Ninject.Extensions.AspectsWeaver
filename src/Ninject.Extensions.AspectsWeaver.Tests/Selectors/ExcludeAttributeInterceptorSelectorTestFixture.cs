@@ -12,7 +12,7 @@ using Castle.DynamicProxy;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Ninject.Extensions.AspectsWeaver.Aspects;
 using Ninject.Extensions.AspectsWeaver.Attributes;
-using Ninject.Extensions.AspectsWeaver.Planning.Bindings;
+using Ninject.Extensions.AspectsWeaver.Syntax;
 using Ninject.Extensions.AspectsWeaver.Tests.Fakes;
 
 namespace Ninject.Extensions.AspectsWeaver.Tests.Selectors

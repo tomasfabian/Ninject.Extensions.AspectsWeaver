@@ -6,9 +6,9 @@ using System.Reflection;
 using Ninject;
 using Ninject.Extensions.AspectsWeaver.Aspects;
 using Ninject.Extensions.AspectsWeaver.Modules;
-using Ninject.Extensions.AspectsWeaver.Planning.Bindings;
 using Ninject.Extensions.AspectsWeaver.Aspects.Custom;
 using Ninject.Extensions.AspectsWeaver.Aspects.Contracts;
+using Ninject.Extensions.AspectsWeaver.Syntax;
 
 //Assenbly dependencies
 //Castle.Core.dll

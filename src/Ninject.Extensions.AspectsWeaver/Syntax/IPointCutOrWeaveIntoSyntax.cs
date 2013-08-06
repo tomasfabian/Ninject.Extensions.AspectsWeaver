@@ -6,7 +6,7 @@
 // // Licensed under the Apache License, Version 2.0.
 // // See the file LICENSE.txt for details.
 // // 
-namespace Ninject.Extensions.AspectsWeaver.Planning.Bindings
+namespace Ninject.Extensions.AspectsWeaver.Syntax
 {
     /// <summary>
     /// Fluent syntax for weave into or pointcut syntax continuation.

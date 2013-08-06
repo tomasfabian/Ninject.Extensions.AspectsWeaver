@@ -8,7 +8,7 @@
 // // 
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Ninject.Extensions.AspectsWeaver.Planning.Bindings;
+using Ninject.Extensions.AspectsWeaver.Syntax;
 using Ninject.Extensions.AspectsWeaver.Tests.Fakes;
 using Ninject.Extensions.AspectsWeaver.Tests.Selectors;
 using Ninject.Syntax;

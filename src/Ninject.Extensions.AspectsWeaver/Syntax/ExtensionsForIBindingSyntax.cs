@@ -12,7 +12,7 @@ using System.Linq.Expressions;
 using Ninject.Extensions.AspectsWeaver.Selectors;
 using Ninject.Syntax;
 
-namespace Ninject.Extensions.AspectsWeaver.Planning.Bindings
+namespace Ninject.Extensions.AspectsWeaver.Syntax
 {
     public static class ExtensionsForIBindingSyntaxAspectsWeaver
     {

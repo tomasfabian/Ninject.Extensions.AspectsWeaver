@@ -10,7 +10,7 @@
 using Ninject.Extensions.AspectsWeaver.Aspects;
 using Ninject.Planning.Bindings;
 
-namespace Ninject.Extensions.AspectsWeaver.Planning.Bindings
+namespace Ninject.Extensions.AspectsWeaver.Syntax
 {
     /// <summary>
     /// Provides a mechanism to decorate classes with interceptors./>.

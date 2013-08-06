@@ -43,25 +43,13 @@ namespace Ninject.Extensions.AspectsWeaver.Activation.Strategies
 
             foreach (var aspectsRegistry in weaverRegistries.GetRegistry(context.Binding.BindingConfiguration))
             {
-                var interceptorTypes = aspectsRegistry.GetAspectTypes(context.Binding.BindingConfiguration).ToArray();
+                var interceptors = GetInterceptors(context, aspectsRegistry, allInterceptors);
 
-                var interceptorSelector = aspectsRegistry.GetSelector(context.Binding.BindingConfiguration);
-
-                
-                var interceptors = interceptorTypes.Select(interceptorType => context.Kernel.Get(interceptorType) as IInterceptor).ToArray();
-                foreach (var interceptor in interceptors)
-                {
-                    allInterceptors.Add(interceptor);
-                }
-
-                if (interceptorSelector != null)
-                {
-                    var selector = new SelectorWithItsInterceptors(interceptors, interceptorSelector);
-                    interceptorSelectors.Add(selector);
-                }
+                AddInterceptorSelector(context, aspectsRegistry, interceptors, interceptorSelectors);
             }
 
             var finalSelectors = new List<IInterceptorSelector> { new ExcludeJointPointAttributeInterceptorSelector() };
+
             if (interceptorSelectors.Any())
             {
                 var joinableCompositeSelector = new JoinableCompositeSelector(interceptorSelectors);
@@ -72,6 +60,54 @@ namespace Ninject.Extensions.AspectsWeaver.Activation.Strategies
 
             proxyGenerationOptions.Selector = compositeSelector;
 
+            this.CreateProxy(context, reference, allInterceptors, proxyGenerationOptions);
+
+            base.Activate(context, reference);
+        }
+
+        #region GetInterceptors
+
+        private static IInterceptor[] GetInterceptors(IContext context, IAspectsRegistry aspectsRegistry,
+                                                      IList<IInterceptor> allInterceptors)
+        {
+            var interceptorTypes = aspectsRegistry.GetAspectTypes(context.Binding.BindingConfiguration).ToArray();
+
+            var interceptors =
+                interceptorTypes.Select(interceptorType => context.Kernel.Get(interceptorType) as IInterceptor)
+                                .ToArray();
+
+            foreach (var interceptor in interceptors)
+            {
+                allInterceptors.Add(interceptor);
+            }
+
+            return interceptors;
+        }
+
+        #endregion
+
+        #region AddInterceptorSelector
+
+        private static void AddInterceptorSelector(IContext context, IAspectsRegistry aspectsRegistry,
+                                                   IInterceptor[] interceptors,
+                                                   List<SelectorWithItsInterceptors> interceptorSelectors)
+        {
+            var interceptorSelector = aspectsRegistry.GetSelector(context.Binding.BindingConfiguration);
+
+            if (interceptorSelector != null)
+            {
+                var selector = new SelectorWithItsInterceptors(interceptors, interceptorSelector);
+                interceptorSelectors.Add(selector);
+            }
+        }
+
+        #endregion
+
+        #region CreateProxy
+
+        private void CreateProxy(IContext context, InstanceReference reference, IList<IInterceptor> allInterceptors,
+                                 ProxyGenerationOptions proxyGenerationOptions)
+        {
             if (allInterceptors.Any())
             {
                 Func<object, object> getOriginalInstance = null;
@@ -79,7 +115,10 @@ namespace Ninject.Extensions.AspectsWeaver.Activation.Strategies
                 if (context.Request.Service.IsInterface)
                 {
                     reference.Instance =
-                        proxyGenenator.CreateInterfaceProxyWithTargetInterface(context.Request.Service, reference.Instance, proxyGenerationOptions, allInterceptors.ToArray());
+                        proxyGenenator.CreateInterfaceProxyWithTargetInterface(context.Request.Service,
+                                                                               reference.Instance,
+                                                                               proxyGenerationOptions,
+                                                                               allInterceptors.ToArray());
 
                     getOriginalInstance = GetOriginalInstance;
                 }
@@ -88,16 +127,17 @@ namespace Ninject.Extensions.AspectsWeaver.Activation.Strategies
                     var originalInstance = reference.Instance;
 
                     reference.Instance =
-                        proxyGenenator.CreateClassProxyWithTarget(context.Request.Service, reference.Instance, proxyGenerationOptions, allInterceptors.ToArray());
+                        proxyGenenator.CreateClassProxyWithTarget(context.Request.Service, reference.Instance,
+                                                                  proxyGenerationOptions, allInterceptors.ToArray());
 
                     getOriginalInstance = _ => originalInstance;
                 }
 
                 RebindDeactivationActionsToOriginalInstance(context, reference.Instance, getOriginalInstance);
             }
-
-            base.Activate(context, reference);
         }
+
+        #endregion
 
         #region RebindDeactivationActionsToOriginalInstance
 
